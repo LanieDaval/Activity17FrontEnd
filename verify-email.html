@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - LHANZ Software</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .verify-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .verify-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .verify-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .verify-card h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .verify-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #8B0000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="verify-card">
+            <div class="verify-icon" id="icon">⏳</div>
+            <h2 id="title">Verifying Email...</h2>
+            <p id="message">Please wait while we verify your email address.</p>
+            <div class="spinner" id="spinner"></div>
+            <p id="detail" style="font-size: 0.9rem; color: #999;"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const userId = urlParams.get('userId');
+
+        if (!token || !userId) {
+            document.getElementById('icon').textContent = '❌';
+            document.getElementById('title').textContent = 'Invalid Link';
+            document.getElementById('message').textContent = 'The verification link is invalid or expired.';
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('detail').textContent = 'Please try registering again.';
+        } else {
+            // Verify email
+            verifyEmail();
+        }
+
+        async function verifyEmail() {
+            try {
+                document.getElementById('detail').textContent = `Token: ${token.substring(0, 20)}...`;
+
+                const response = await fetch('http://localhost:3000/api/auth/verify-email?token=' + token + '&userId=' + userId, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('icon').textContent = '✓';
+                    document.getElementById('title').textContent = 'Email Verified!';
+                    document.getElementById('message').textContent = data.message || 'Your email has been successfully verified.';
+                    document.getElementById('spinner').style.display = 'none';
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Verification failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('icon').textContent = '❌';
+                document.getElementById('title').textContent = 'Verification Failed';
+                document.getElementById('message').textContent = error.message;
+                document.getElementById('spinner').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - LHANZ Software</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="sotware image.jpg" alt="Software" class="navbar-logo">
+                <h1>WELCOME TO LHANZ_SOFTWARE SHOP</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#products" class="nav-link">Products</a>
+                <div class="auth-buttons">
+                    <span id="userEmail" class="user-email"></span>
+                    <button onclick="handleLogout()" class="btn-logout">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="dashboard-container">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-picture-container">
+                            <img id="profilePicture" src="https://via.placeholder.com/150?text=User+Profile" alt="Profile Picture" class="profile-picture">
+                            <label class="upload-label">
+                                <input type="file" id="profileImageInput" accept="image/*" onchange="handleProfileImageUpload(event)">
+                                <span class="upload-icon">📷</span>
+                            </label>
+                        </div>
+                        <div class="profile-info-header">
+                            <h2 id="userFullName">User Name</h2>
+                            <p id="userEmailDisplay">email@example.com</p>
+                            <span id="verificationBadge" class="verification-badge">✓ Verified</span>
+                        </div>
+                    </div>
+
+                    <!-- Edit Toggle -->
+                    <div class="edit-toggle">
+                        <button id="editBtn" onclick="toggleEditMode()" class="btn-edit">✏️ Edit Profile</button>
+                        <button id="cancelBtn" onclick="toggleEditMode()" class="btn-cancel" style="display: none;">✕ Cancel</button>
+                    </div>
+
+                    <!-- Profile Details (View Mode) -->
+                    <div id="viewMode" class="profile-details">
+                        <div class="detail-item">
+                            <label>First Name:</label>
+                            <p id="viewFirstName">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Last Name:</label>
+                            <p id="viewLastName">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email:</label>
+                            <p id="viewEmail">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Member Since:</label>
+                            <p id="viewCreatedAt">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Edit Form -->
+                    <form id="editForm" class="profile-form" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editFirstName">First Name</label>
+                                <input type="text" id="editFirstName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editLastName">Last Name</label>
+                                <input type="text" id="editLastName" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmail">Email Address</label>
+                            <input type="email" id="editEmail" class="form-input" readonly>
+                            <small>Email cannot be changed</small>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">💾 Save Changes</button>
+                        </div>
+                    </form>
+
+                    <div id="editMessage" class="message" style="display: none;"></div>
+                </div>
+
+                <!-- Account Stats -->
+                <div class="account-stats">
+                    <div class="stat-box">
+                        <h3>3</h3>
+                        <p>Products Purchased Sample</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>₱2,999.00</h3>
+                        <p>Total Spent Sample</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>12</h3>
+                        <p>Days Active Sample</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 LHANZ_SOFTWARE SHOP. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load user profile on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            checkLogin();
+        });
+
+        // Load user profile from API
+        function loadUserProfile() {
+            const token = localStorage.getItem('token');
+            const email = localStorage.getItem('userEmail');
+
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display email in navbar
+            document.getElementById('userEmail').textContent = email;
+
+            // Fetch user profile from API
+            makeProtectedRequest('/api/auth/profile', 'GET')
+                .then(data => {
+                    if (data.user) {
+                        const user = data.user;
+
+                        // Display profile
+                        document.getElementById('userFullName').textContent = `${user.firstName} ${user.lastName}`;
+                        document.getElementById('userEmailDisplay').textContent = user.email;
+
+                        // View mode
+                        document.getElementById('viewFirstName').textContent = user.firstName;
+                        document.getElementById('viewLastName').textContent = user.lastName;
+                        document.getElementById('viewEmail').textContent = user.email;
+                        
+                        // Format date
+                        if (user.createdAt) {
+                            const date = new Date(user.createdAt);
+                            document.getElementById('viewCreatedAt').textContent = date.toLocaleDateString();
+                        }
+
+                        // Edit form
+                        document.getElementById('editFirstName').value = user.firstName;
+                        document.getElementById('editLastName').value = user.lastName;
+                        document.getElementById('editEmail').value = user.email;
+
+                        // Set profile picture if available
+                        if (user.profilePicture) {
+                            document.getElementById('profilePicture').src = user.profilePicture;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading profile:', error);
+                });
+        }
+
+        // Toggle edit mode
+        function toggleEditMode() {
+            const viewMode = document.getElementById('viewMode');
+            const editForm = document.getElementById('editForm');
+            const editBtn = document.getElementById('editBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            viewMode.style.display = viewMode.style.display === 'none' ? 'block' : 'none';
+            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+            editBtn.style.display = editBtn.style.display === 'none' ? 'block' : 'none';
+            cancelBtn.style.display = cancelBtn.style.display === 'none' ? 'none' : 'block';
+        }
+
+        // Handle profile image upload
+        function handleProfileImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                console.log('📷 Selected file:', file.name, file.size, 'bytes');
+                
+                const reader = new FileReader();
+                reader.onerror = () => {
+                    alert('Error reading file');
+                };
+                reader.onload = async (e) => {
+                    // Convert to base64
+                    const profilePicture = e.target.result;
+                    console.log('✓ File converted to base64, size:', profilePicture.length, 'bytes');
+                    
+                    document.getElementById('profilePicture').src = profilePicture;
+
+                    // Save to database via API
+                    try {
+                        console.log('📤 Uploading to server...');
+                        const response = await makeProtectedRequest('/api/auth/upload-profile-picture', 'POST', { profilePicture });
+                        console.log('✓ Profile picture saved:', response.message);
+                        alert('✓ Profile picture saved successfully!');
+                    } catch (error) {
+                        console.error('❌ Error saving profile picture:', error);
+                        alert('❌ Failed to save profile picture: ' + error.message);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle profile update
+        document.getElementById('editForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const updatedData = {
+                firstName: document.getElementById('editFirstName').value,
+                lastName: document.getElementById('editLastName').value
+            };
+
+            try {
+                const response = await makeProtectedRequest('/api/auth/update-profile', 'POST', updatedData);
+                
+                if (response.message) {
+                    document.getElementById('editMessage').textContent = '✓ ' + response.message;
+                    document.getElementById('editMessage').className = 'message success';
+                    document.getElementById('editMessage').style.display = 'block';
+
+                    // Reload profile
+                    setTimeout(() => {
+                        loadUserProfile();
+                        toggleEditMode();
+                    }, 1500);
+                }
+            } catch (error) {
+                document.getElementById('editMessage').textContent = '✗ ' + error.message;
+                document.getElementById('editMessage').className = 'message error';
+                document.getElementById('editMessage').style.display = 'block';
+            }
+        });
+
+        // Load stored profile picture
+        window.addEventListener('load', () => {
+            // Profile picture is now loaded from API in loadUserProfile()
+            // No need to load from localStorage
+        });
+    </script>
+</body>
+</html>

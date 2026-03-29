@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">                <img src="sotware image.jpg" alt="Software" class="navbar-logo">                <h1>WELCOME TO LHANZ_SOFTWARE SHOP</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="#products" class="nav-link">Products</a>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="register.html" class="btn-signup">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Smart Software, Simple Solutions.</h2>
+            <p>Quality Software at Your Fingertips</p>
+            <a href="#products" class="btn-primary">Shop Now</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop" alt="Software Development">
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <h2>PRODUCTS AVAILABLE</h2>
+            <div class="products-grid">
+                <!-- Product Card 1 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=200&fit=crop" alt="ProCode IDE" class="product-image-img">
+                    <h3>ProCode IDE</h3>
+                    <p class="product-desc">Professional integrated development environment</p>
+                    <p class="product-price">₱8,999.00</p>
+                    <button class="btn-add-cart" onclick="addToCart('ProCode IDE', ₱8,999)">Add to Cart</button>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=300&h=200&fit=crop" alt="DesignStudio Pro" class="product-image-img">
+                    <h3>DesignStudio Pro</h3>
+                    <p class="product-desc">Advanced graphic design software suite</p>
+                    <p class="product-price">₱7,999.00</p>
+                    <button class="btn-add-cart" onclick="addToCart('DesignStudio Pro', ₱7,999)">Add to Cart</button>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=200&fit=crop" alt="DataAnalytics Plus" class="product-image-img">
+                    <h3>DataAnalytics Plus</h3>
+                    <p class="product-desc">Business intelligence and data visualization tool</p>
+                    <p class="product-price">₱6,999.99</p>
+                    <button class="btn-add-cart" onclick="addToCart('DataAnalytics Plus', ₱6,999.99)">Add to Cart</button>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=300&h=200&fit=crop" alt="SecureVault Pro" class="product-image-img">
+                    <h3>SecureVault Pro</h3>
+                    <p class="product-desc">Enterprise password and data management</p>
+                    <p class="product-price">₱5,999.99</p>
+                    <button class="btn-add-cart" onclick="addToCart('SecureVault Pro', ₱5,999.99)">Add to Cart</button>
+                </div>
+
+                <!-- Product Card 5 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=300&h=200&fit=crop" alt="VideoMaster Studio" class="product-image-img">
+                    <h3>VideoMaster Studio</h3>
+                    <p class="product-desc">Professional video editing and rendering software</p>
+                    <p class="product-price">₱2,999.00</p>
+                    <button class="btn-add-cart" onclick="addToCart('VideoMaster Studio', ₱2,999.00)">Add to Cart</button>
+                </div>
+
+                <!-- Product Card 6 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop" alt="CloudSync Enterprise" class="product-image-img">
+                    <h3>CloudSync Enterprise</h3>
+                    <p class="product-desc">Cloud storage and synchronization solution</p>
+                    <p class="product-price">₱3,999.00</p>
+                    <button class="btn-add-cart" onclick="addToCart('CloudSync Enterprise', ₱3,999.00)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose LHANZ_SOFTWARE SHOP?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">✅</span>
+                    <h3>Verified Software</h3>
+                    <p>All software is authentic and virus-free</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔒</span>
+                    <h3>Secure Payment</h3>
+                    <p>Industry-standard encryption and security</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Instant Download</h3>
+                    <p>Get licenses immediately after purchase</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📧</span>
+                    <h3>24/7 Support</h3>
+                    <p>Expert customer support when you need it</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>🛒 Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <h3>Total: $<span id="cartTotal">0.00</span></h3>
+                <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 LHANZ_SOFTWARE SHOP. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Welcome to LHANZ_SOFTWARE SHOP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="sotware image.jpg" alt="Software" class="navbar-logo">
+                <h1>WELCOME TO LHANZ_SOFTWARE SHOP</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#products" class="nav-link">Products</a>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login active">Login</a>
+                    <a href="register.html" class="btn-signup">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-form-wrapper">
+                <div class="auth-header">
+                    
+                    <p>Create your account here!</p>
+                </div>
+
+                <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="" 
+                            required
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter your password" 
+                            required
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group checkbox">
+                        <input 
+                            type="checkbox" 
+                            id="remember" 
+                            name="remember"
+                            class="form-checkbox"
+                        >
+                        <label for="remember" class="checkbox-label">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-block">Sign In</button>
+
+                   
+                </form>
+
+                <div class="auth-footer">
+                    <p><a href="forgot-password.html" class="link">Forgot your password?</a></p>
+                    <p>Don't have an account? <a href="register.html" class="link">Sign up here</a></p>
+                </div>
+            </div>
+
+           
+    </section>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content small">
+            <span class="close" onclick="closeSuccessModal()">&times;</span>
+            <div class="success-message">
+                <span class="success-icon">✅</span>
+                <h3 id="successText">Login Successful!</h3>
+                <p id="successDesc">Redirecting to dashboard...</p>
+                <button onclick="window.location.href='index.html'" class="btn-primary">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 LHANZ_SOFTWARE SHOP. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Load remembered email if available
+        window.addEventListener('load', () => {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail) {
+                document.getElementById('email').value = rememberedEmail;
+                document.getElementById('remember').checked = true;
+            }
+        });
+    </script>
+</body>
+</html>

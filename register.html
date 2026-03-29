@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SoftVerse</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="sotware image.jpg" alt="Software" class="navbar-logo">
+                <h1>WELCOME TO LHANZ_SOFTWARE SHOP</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#products" class="nav-link">Products</a>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="register.html" class="btn-signup active">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-form-wrapper">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Join us now and get started with your software journey!</p>
+                </div>
+
+                <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                name="firstName" 
+                                placeholder="" 
+                                required
+                                class="form-input"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                name="lastName" 
+                                placeholder="" 
+                                required
+                                class="form-input"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="registerEmail" 
+                            name="email" 
+                            placeholder="" 
+                            required
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input 
+                            type="password" 
+                            id="registerPassword" 
+                            name="password" 
+                            placeholder="At least 8 characters" 
+                            required
+                            class="form-input"
+                            onchange="validatePassword()"
+                        >
+                        <small class="password-hint">Must contain at least 8 characters, one uppercase, one number</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            placeholder="Confirm your password" 
+                            required
+                            class="form-input"
+                            onchange="validatePassword()"
+                        >
+                    </div>
+
+                    <div id="passwordError" class="error-message"></div>
+
+                    <button type="submit" class="btn-primary btn-block">Create Account</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="login.html" class="link">Sign in here</a></p>
+                </div>
+            </div>
+
+            
+        
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content small">
+            <span class="close" onclick="closeSuccessModal()">&times;</span>
+            <div class="success-message">
+                <span class="success-icon">🎉</span>
+                <h3>Welcome to LHANZ_SOFTWARE SHOP</h3>
+                <p>Your account has been created successfully.</p>
+                <button onclick="window.location.href='login.html'" class="btn-primary">Sign In Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 LHANZ_SOFTWARE SHOP. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('passwordError');
+
+            if (password !== confirmPassword) {
+                errorDiv.textContent = '❌ Passwords do not match';
+                return false;
+            }
+
+            if (password.length < 8) {
+                errorDiv.textContent = '❌ Password must be at least 8 characters long';
+                return false;
+            }
+
+            if (!/[A-Z]/.test(password)) {
+                errorDiv.textContent = '❌ Password must contain at least one uppercase letter';
+                return false;
+            }
+
+            if (!/[0-9]/.test(password)) {
+                errorDiv.textContent = '❌ Password must contain at least one number';
+                return false;
+            }
+
+            errorDiv.textContent = '';
+            return true;
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
